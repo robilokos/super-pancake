@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+pymongo
+graphene
+python-jose
+json
+pydantic

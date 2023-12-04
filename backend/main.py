@@ -8,12 +8,13 @@ from graphene import ObjectType, Schema, Field, String
 from pydantic import BaseModel
 from bson import ObjectId
 
+# TODO: hash user password before storing it in db
+
 app = FastAPI()
 
 # define origins
 origins = [
     "http://localhost",
-    # "http://localhost:3000",
     "http://localhost:8080",
 ]
 

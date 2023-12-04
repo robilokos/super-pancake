@@ -1,4 +1,4 @@
-FROM python:latest
+FROM python:3.11
 
 WORKDIR /usr/src/super-pancake
 
@@ -10,4 +10,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main:super-pancake", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]

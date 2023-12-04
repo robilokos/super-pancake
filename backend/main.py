@@ -1,17 +1,23 @@
 from fastapi import FastAPI, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordBearer
-from fastapi.middleware.graphql import GraphQLApp
-from motor.motor_asyncio import AsyncIOMotorClient
+from ariadne import gql, QueryType, make_executable_schema, graphql_sync, ObjectType
+from ariadne.asgi import GraphQL
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from starlette.middleware.cors import CORSMiddleware
 from graphene import ObjectType, Schema, Field, String
+from pydantic import BaseModel
+from bson import ObjectId
 
 app = FastAPI()
 
+# define origins
 origins = [
     "http://localhost",
-    "http://localhost:3000",
+    # "http://localhost:3000",
+    "http://localhost:8080",
 ]
 
+# add cors
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -20,24 +26,50 @@ app.add_middleware(
     allow_headers=["*"]
 )
 
-class Query(ObjectType):
-    hello = String(name=String(default_value="World"))
+# define GraphQL schema
+type_defs = gql("""
+    type Query {
+        hello: String!
+    }
+""")
 
-    async def resolve_hello(root, info, name):
-        return f"Hello, {name}!"
+query = QueryType()
+query.set_field("hello", lambda *_: "Hello, GraphQL!")
 
-schema = Schema(query=Query)
+schema = make_executable_schema(type_defs, query)
 
-app.add_route("/graphql", GraphQLApp(schema=schema))
+app.add_route("/graphql", GraphQL(schema, debug=True))
 
-MONGO_URI = "mongodb://localhost:27017"
-DATABASE_NAME = "mydatabase"
+MONGO_URI = "mongodb://mongodb:27017/mydatabase"
 
 async def get_database():
     client = AsyncIOMotorClient(MONGO_URI)
-    db = client(DATABASE_NAME)
+    db = client.get_database()
     return db
 
 @app.get("/")
 def read_root():
     return {"message": "Welcome to the FastAPI backend!"}
+
+
+class UserCreate(BaseModel):
+    username: str
+    password: str
+
+@app.post("/create-account", response_model=dict)
+async def create_account(user_data: UserCreate, db: AsyncIOMotorDatabase = Depends(get_database)):
+    try:
+        users_collection = db["users"]
+        result = await users_collection.insert_one({
+            "username": user_data.username, 
+            "password": user_data.password
+        })
+        new_user_id = str(result.inserted_id)
+
+        return {"message": f"Account created. ID: {new_user_id}"}
+    except ValidationError as e:
+        raise HTTPException(status_code=422, detail=str(e))
+
+@app.get("/create-account")
+async def get_account():
+    return {"message": "accounts"}

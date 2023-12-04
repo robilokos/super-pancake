@@ -2,22 +2,29 @@ version: '3'
 
 services:
   frontend:
-    build: ./super-pancake/frontend
+    build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend
     ports:
-      - "3000:3000"
+      - "8080:8080"
+    restart: unless-stopped
     depends_on:
       - backend
+    volumes:
+      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend:/super-pancake/frontend
 
   backend:
-    build: ./super-pancake/backend
+    build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/backend
     ports:
       - "8000:8000"
+    restart: unless-stopped
     depends_on:
       - mongodb
     environment:
       MONGO_URI: "mongodb://mongodb:27017/mydatabase"
+    volumes:
+      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/backend:/super-pancake/backend
 
   mongodb:
     image: "mongo"
     ports:
       - "27017:27017"
+    restart: unless-stopped

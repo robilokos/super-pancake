@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:20
 
 WORKDIR /usr/src/super-pancake
 
@@ -8,6 +8,6 @@ RUN npm install
 
 COPY . .
 
-EXPOSE 3000
+EXPOSE 8080
 
 CMD ["npm", "run", "serve"]

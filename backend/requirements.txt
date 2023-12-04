@@ -4,3 +4,6 @@ pymongo
 graphene
 python-jose
 pydantic
+motor
+ariadne
+starlette

@@ -5,7 +5,8 @@ from ariadne.asgi import GraphQL
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from starlette.middleware.cors import CORSMiddleware
 from bson import ObjectId
-from mongo.db_actions import connect_to_mongo, close_mongo_connection
+from mongo.database import database
+from apis.account_api import router as account_router
 
 # TODO: hash user password before storing it in db
 
@@ -48,24 +49,15 @@ app.add_route("/graphql", GraphQL(schema, debug=True))
 
 
 # MongoDB connection
-MONGO_URI = "mongodb://mongodb:27017/mydatabase"
-
-
 @app.on_event("startup")
 async def startup_db_client():
-    app.mongodb_client = await connect_to_mongo(MONGO_URI)
-    app.mongodb = app.mongodb_client.get_database()
+    await database.connect()
 
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
-    await close_mongo_connection(app.mongodb_client)
-
-
-def get_database() -> AsyncIOMotorDatabase:
-    return app.mongodb
+    await database.disconnect()
 
 
 # Add routers to the app
-from apis.account_api import router as account_router
 app.include_router(account_router)

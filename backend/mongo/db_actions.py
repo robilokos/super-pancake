@@ -1,19 +1,3 @@
-from motor.motor_asyncio import AsyncIOMotorClient
-from pymongo.errors import PyMongoError
-
-
-async def connect_to_mongo(database_url: str):
-    try:
-        client = AsyncIOMotorClient(database_url)
-        return client
-    except PyMongoError as e:
-        raise Exception(f"Unable to connect to MongoDB: {str(e)}")
-
-
-async def close_mongo_connection(client: AsyncIOMotorClient):
-    client.close()
-
-
 async def insert_one(collection, document):
     result = await collection.insert_one(document)
     return result.inserted_id

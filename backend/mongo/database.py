@@ -2,6 +2,7 @@ from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 from fastapi import Depends
 from os import environ
 
+MONGO_URI = environ.get("MONGO_URI", "mongodb://mongodb:27017/mydatabase")
 
 class Database:
     def __init__(self, uri: str):
@@ -21,5 +22,4 @@ class Database:
         return self.db
 
 
-MONGO_URI = environ.get("MONGO_URI", "mongodb://mongodb:27017/mydatabase")
 database = Database(MONGO_URI)

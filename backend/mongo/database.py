@@ -1,5 +1,4 @@
 from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
-from fastapi import Depends
 from os import environ
 
 MONGO_URI = environ.get("MONGO_URI", "mongodb://mongodb:27017/mydatabase")

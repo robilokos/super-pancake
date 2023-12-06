@@ -1,25 +1,23 @@
-from fastapi import FastAPI, HTTPException, Depends, status
+from fastapi import FastAPI
 from fastapi.security import OAuth2PasswordBearer
 from ariadne import gql, QueryType, make_executable_schema, graphql_sync, ObjectType
 from ariadne.asgi import GraphQL
-from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
+from motor.motor_asyncio import AsyncIOMotorDatabase
 from starlette.middleware.cors import CORSMiddleware
-from graphene import ObjectType, Schema, Field, String
-from pydantic import BaseModel, ValidationError
 from bson import ObjectId
-from mongo.db_actions import connect_to_mongo, close_mongo_connection, insert_one, find_all
+from mongo.db_actions import connect_to_mongo, close_mongo_connection
 
 # TODO: hash user password before storing it in db
 
 app = FastAPI()
 
-# define origins
+# Define origins
 origins = [
     "http://localhost",
     "http://localhost:8080",
 ]
 
-# add cors
+# Add cors
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
@@ -34,7 +32,7 @@ def read_root():
     return {"message": "Welcome to the FastAPI backend!"}
 
 
-# define GraphQL schema
+# Define GraphQL schema
 type_defs = gql("""
     type Query {
         hello: String!
@@ -68,28 +66,6 @@ def get_database() -> AsyncIOMotorDatabase:
     return app.mongodb
 
 
-# account apis
-class UserCreate(BaseModel):
-    username: str
-    password: str
-
-
-@app.post("/create-account", response_model=dict)
-async def create_account(user_data: UserCreate, db: AsyncIOMotorDatabase = Depends(get_database)):
-    users_collection = db["users"]
-    
-    result = await insert_one(users_collection, {
-        "username": user_data.username, 
-        "password": user_data.password
-    })
-    
-    new_user_id = str(result)
-    return {"message": f"Account created. ID: {new_user_id}"}
-
-
-@app.get("/accounts", response_model=list)
-async def list_users(db: AsyncIOMotorDatabase = Depends(get_database)):
-    users_collection = db["users"]
-    
-    users = await find_all(users_collection)
-    return users
+# Add routers to the app
+from apis.account_api import router as account_router
+app.include_router(account_router)

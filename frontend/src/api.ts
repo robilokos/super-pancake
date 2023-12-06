@@ -12,3 +12,4 @@ export const api = axios.create({
 
 // example api functions:
 export const createAccount: any = (userData: any) => api.post('/create-account', userData)
+export const getUserAccounts: any = () => api.get('/accounts')

@@ -71,6 +71,13 @@ async def create_account(user_data: UserCreate, db: AsyncIOMotorDatabase = Depen
     except ValidationError as e:
         raise HTTPException(status_code=422, detail=str(e))
 
-@app.get("/create-account")
-async def get_account():
-    return {"message": "accounts"}
+@app.get("/accounts")
+async def get_account(db: AsyncIOMotorDatabase = Depends(get_database)):
+    users_collection = db["users"]
+    users_cursor = users_collection.find({})
+    users = [user async for user in users_cursor]
+
+    for user in users:
+        user["_id"] = str(user["_id"])
+    
+    return {"message": users}

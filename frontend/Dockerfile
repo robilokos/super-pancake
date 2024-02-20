@@ -1,6 +1,6 @@
 FROM node:20
 
-WORKDIR /usr/src/super-pancake
+WORKDIR /usr/src/super-pancake/frontend
 
 COPY package*.json ./
 

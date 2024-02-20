@@ -5,26 +5,41 @@ services:
     build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend
     ports:
       - "8080:8080"
-    restart: unless-stopped
+    restart: always
     depends_on:
       - backend
     volumes:
-      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend:/super-pancake/frontend
+      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend:/usr/src/super-pancake/frontend
 
   backend:
     build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/backend
     ports:
       - "8000:8000"
-    restart: unless-stopped
+    restart: always
     depends_on:
       - mongodb
+      - mysqldb
     environment:
       MONGO_URI: "mongodb://mongodb:27017/mydatabase"
+      MYSQL_HOST: "mysql"
+      MYSQL_PORT: "3306"
     volumes:
-      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/backend:/super-pancake/backend
+      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/backend:/usr/src/super-pancake/backend
 
   mongodb:
     image: "mongo"
     ports:
       - "27017:27017"
-    restart: unless-stopped
+    restart: always
+
+  mysqldb:
+    image: "mysql:latest"
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: "admin"
+      MYSQL_DATABASE: "pancake"
+      MYSQL_USER: "robi"
+      MYSQL_PASSWORD: "test"

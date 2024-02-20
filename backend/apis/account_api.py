@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from motor.motor_asyncio import AsyncIOMotorDatabase
-from mongo.db_actions import insert_one, find_all
-from mongo.database import database
+from mongodb.db_actions import insert_one, find_all
+from mongodb.database import database
 from pydantic import BaseModel
 
 router = APIRouter()

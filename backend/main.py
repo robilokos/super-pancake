@@ -5,7 +5,7 @@ from ariadne.asgi import GraphQL
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from starlette.middleware.cors import CORSMiddleware
 from bson import ObjectId
-from mongo.database import database
+from mongodb.database import database
 from apis.account_api import router as account_router
 
 # TODO: hash user password before storing it in db

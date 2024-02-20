@@ -17,6 +17,17 @@
             - `vue add vuex` - for state management
             - `npm install axios` - for api calls
         - create the Dockerfile in the frontend folder
+
+    - frontend:
+        - install node to your computer
+        - go to the root folder
+        - run `npm create vite@latest`
+            - choose `React` then `typescript`
+        - install additional dependencies:
+            - `npm install bootstrap@latest` - for bootstrap styles
+            - `npm install axios` - for api calls
+        - add `import 'bootstrap/dist/css/bootstrap.css'` into the `main.tsx` file
+        - create the Dockerfile in the react-frontend folder
     
     - backend:
         - go to the root folder, create the backend folder and go into that `mkdir backend`, `cd backend`

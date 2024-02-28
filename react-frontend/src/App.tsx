@@ -1,6 +1,7 @@
 import ListGroup from "./components/ListGroup";
 import Alert from "./components/Alert";
 import Button from "./components/Button";
+import MuiTypography from "./components/MuiTypography";
 import { useState } from "react";
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
     <Button onClick={() => console.log("click")} color="success">Success</Button>
     { alertVisible === true && <Alert onClose={handleClose}>My alert</Alert> }
     <Button onClick={handleClick}>Primary</Button>
+    <MuiTypography></MuiTypography>
   </div>;
 }
 

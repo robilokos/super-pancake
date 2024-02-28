@@ -1,25 +1,16 @@
 version: '3'
 
 services:
-  frontend:
-    build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend
+  react-frontend:
+    build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/react-frontend
     ports:
       - "8080:8080"
     restart: always
     depends_on:
       - backend
     volumes:
-      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend:/usr/src/super-pancake/frontend
-
-  react-frontend:
-    build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/react-frontend
-    ports:
-      - "3000:3000"
-    restart: always
-    depends_on:
-      - backend
-    volumes:
-      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/frontend:/usr/src/super-pancake/react-frontend
+      - /Users/lokosrobert/Desktop/SuperPancake/super-pancake/react-frontend:/usr/src/super-pancake/react-frontend
+      - /usr/src/super-pancake/react-frontend/node_modules
 
   backend:
     build: /Users/lokosrobert/Desktop/SuperPancake/super-pancake/backend

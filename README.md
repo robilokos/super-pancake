@@ -2,31 +2,23 @@
 - run the application:
     - clone repository
     - download docker to your desktop
-    - run `docker-compose up` command in the root folder
+    - run `docker-compose up --build` command in the root folder
     - go to `http://localhost:8080/` to reach the app
 
 - how to reproducate the application:
     - frontend:
         - install node to your computer
         - go to the root folder
-        - run `npm install -g @vue/cli` for installing the vue cli
-        - run `vue create frontend` to create the vue.js project
-        - go to the frontend folder: `cd frontend/`
-        - install additional dependencies:
-            - `vue add typescript` - for using ts in the project, static typing
-            - `vue add vuex` - for state management
-            - `npm install axios` - for api calls
-        - create the Dockerfile in the frontend folder
-
-    - frontend:
-        - install node to your computer
-        - go to the root folder
         - run `npm create vite@latest`
+            - add the name of the project, e.g: `react-frontend`
             - choose `React` then `typescript`
+        - go to the frontend folder: `cd react-frontend/`
         - install additional dependencies:
-            - `npm install bootstrap@latest` - for bootstrap styles
-            - `npm install axios` - for api calls
+            - `npm install bootstrap@latest` - for Bootstrap styles
+            - `npm install axios` - for API calls
+            - `npm install @mui/icons-material @mui/material @emotion/styled @emotion/react` - for Material UI
         - add `import 'bootstrap/dist/css/bootstrap.css'` into the `main.tsx` file
+        - add `server: {host: true, strictPort: true, port: 8080}` into the `vite.config.ts` file, under `plugins`
         - create the Dockerfile in the react-frontend folder
     
     - backend:

@@ -1,1 +1,3 @@
-docker-compose.yml
+startup.sh
+*.env
+.vscode/

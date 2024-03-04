@@ -1,32 +1,22 @@
-import ListGroup from "./components/ListGroup";
-import Alert from "./components/Alert";
-import Button from "./components/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import BookSearch from "./components/BookSearch";
+import Toggle from "./components/Toggle";
+import "./App.css";
 
 function App() {
-  const items = [
-    'New York',
-    'Budapest',
-    'London',
-    'Paris',
-    'Tokyo'
-  ];
+  const storedIsDark = JSON.parse(localStorage.getItem('isDark') as string);
 
-  const [alertVisible, setAlertVisibility] = useState(false);
+  const [isDark, setIsDark] = useState(storedIsDark);
 
-  const handleClick = () => {
-    setAlertVisibility(true);
-  }
-
-  const handleClose = () => {
-    setAlertVisibility(false);
-  }
-
-  return <div>
-    <ListGroup items={items} heading="Cities"></ListGroup>
-    <Button onClick={() => console.log("click")} color="success">Success</Button>
-    { alertVisible === true && <Alert onClose={handleClose}>My alert</Alert> }
-    <Button onClick={handleClick}>Primary</Button>
+  useEffect(() => {
+    localStorage.setItem('isDark', JSON.stringify(isDark))
+  }, [isDark])
+  
+  return <div className="App" data-theme={isDark ? "dark" : "light"}>
+    <Toggle isChecked={isDark} handleChange={() => setIsDark(!isDark)}></Toggle>
+    <h1 className="title">Super Pancake</h1>
+    <BookSearch></BookSearch>
   </div>;
 }
 

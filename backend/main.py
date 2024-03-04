@@ -7,6 +7,7 @@ from starlette.middleware.cors import CORSMiddleware
 from bson import ObjectId
 from mongodb.database import database
 from apis.account_api import router as account_router
+from apis.google_books_api import router as google_books_api_router
 
 # TODO: hash user password before storing it in db
 
@@ -61,3 +62,4 @@ async def shutdown_db_client():
 
 # Add routers to the app
 app.include_router(account_router)
+app.include_router(google_books_api_router)

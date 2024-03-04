@@ -8,3 +8,5 @@ motor
 ariadne
 starlette
 mysql-connector-python
+requests
+httpx
